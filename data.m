@@ -43,8 +43,8 @@ cost.R = 2*eye(system.m);
 % state feedback
 %system.K = inv(cost.R + system.B' * cost.P * system.B) * system.B' * cost.P * system.A;
 p = [2,0.5];
-system.K = place(system.A, system.B, p);
-
+tmp = place(system.A, system.B, p);
+system.K = -tmp;
 % problem reformulation
 system.A_K = system.A + system.B * system.K;
 

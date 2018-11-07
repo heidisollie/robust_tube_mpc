@@ -1,7 +1,7 @@
 
 
 data;
-%rmpc_offline;
+%rtmpc_offline;
 
 x(:,1) = system.x0;
 
