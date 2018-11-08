@@ -10,10 +10,13 @@ problem.constraints = constraints;
 problem.cost = cost;
 
 problem.rmpc_disturbance.w_sequence = generate_disturbance(problem,0);
-problem.t_constraints = tightened_constraints(problem);
+problem.constraints = tightened_constraints_e(problem);
 
 problem.rmpc_constraints = generate_constraints(problem);
 problem.rmpc_cost = generate_cost(problem);
+
+display_N_alpha(problem);
+
 
 for i = 1:system.Nsim
     % Return optimal x and u for horizon
