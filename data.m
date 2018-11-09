@@ -9,7 +9,7 @@
 %
 
 % initial condition
-system.x0 = [20; -20];
+system.x0 = [10; -10];
 
 % system 
 system.h=0.1;
@@ -20,42 +20,27 @@ system.n = size(system.A,2);
 system.m = size(system.B,2);
 
 % constraints
-constraints.C = [1 0; -1 0; 0 1;0 -1; 0 0];
-constraints.D = [0;0;0;0;-1];
-constraints.e = [20;20;20;20;0];
+constraints.C = [1 0; -1 0; 0 1;0 -1; 0 0; 0 0];
+constraints.D = [0;0;0;0;-1; 1];
+constraints.e = [20;20;20;20;0;50];
 
-% terminal constraints
-constraints.G = [1 0;-1 0;0 1; 0 -1];
-constraints.h = [2;2;2;2];
+%terminal constraints
+constraints.G = [1 0; -1 0; 0 1; 0 -1];
+constraints.h = [15; 15; 15; 15];
 
 % disturbance
-constraints.E = [1 0; -1 0; 0 1; 0 -1];
-constraints.g = 0.1*ones(size(constraints.E,1),1);
+disturbance.E = [1 0; -1 0; 0 1; 0 -1];
+disturbance.g = 0.1*ones(size(disturbance.E,1),1);
 
 % cost
 cost.Q = 3*eye(system.n);
 cost.R = 2*eye(system.m);
 
-% terminal cost
-[cost.P, ~, ~] = dare(system.A, system.B, cost.Q, cost.R);
-
-
-% state feedback
-%system.K = inv(cost.R + system.B' * cost.P * system.B) * system.B' * cost.P * system.A;
-p = [2,0.5];
-tmp = place(system.A, system.B, p);
-system.K = -tmp;
-% problem reformulation
-system.A_K = system.A + system.B * system.K;
-
 % horizon
-system.L = 9;
+system.L = 28;
     
 % alpha
 system.alpha = 0.25;
 
 % max number of iterations
 system.Nsim = 500;
-
-% alpha 
-alpha = 0.25;

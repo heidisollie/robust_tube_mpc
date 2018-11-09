@@ -2,6 +2,7 @@ function rmpc_constraints = generate_constraints(problem)
 
 %add tightened constraints for C, D, e, G, h
 % change from X, U, X_f to Z, V, Z_f
+
 L = problem.system.L;
 n = problem.system.n;
 %d = [z; v]
@@ -21,12 +22,12 @@ c = kron(ones(L,1),problem.constraints.e);
 
 rmpc_constraints.Ain = [a; a3];
 rmpc_constraints.Bin = [b; problem.constraints.E];
-rmpc_constraints.cin = [c; problem.constraints.h; problem.constraints.g];
+rmpc_constraints.cin = [c; problem.constraints.h; problem.constraints.f];
 
 
 % Equality constraints Aeq + Beq x = ceq
 %                      -A z_k + z_k+1 - B v_k = 0, k \in R_L-1
-a1 = [kron(eye(L), -problem.system.A) zeros(n*L, n)];
+a1 = [kron(eye(L), -problem.system.A_K) zeros(n*L, n)];
 a2 = [zeros(n*L, n) kron(eye(L), eye(n))];
 a3 = a1 + a2;
 a4 = kron(eye(L), -problem.system.B);

@@ -6,7 +6,7 @@ step_size = 1;
 alpha_array = 1:step_size:max_N;
 N_array = zeros(1, size(alpha_array, 2));
 
-disturbance_set=Polyhedron(problem.constraints.E,problem.constraints.g);
+disturbance_set = Polyhedron(problem.disturbance.E, problem.disturbance.g);
 
 for j=1:size(alpha_array,2)
     i = 1;
