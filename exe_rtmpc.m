@@ -1,3 +1,4 @@
+close all;
 
 data;
 
@@ -20,7 +21,9 @@ end
 z(:,i+1) = [0; 0];
 %% PLOTTING
 
-%Plot controllable sets and states for each iteration
+[alpha_array, N_array] = generate_N_alpha(problem);
+
+%Plot state and error trajectory
 figure; hold on; grid on;
 cs=1.75;
 
@@ -30,4 +33,14 @@ st = plot(x(1,:),x(2,:), 'k*-', ...
 err = plot(x(1,:)-z(1,:), ...
            x(2,:) - z(2,:), ...
            'b--');
+hold off;       
 legend([st err], 'State', 'Error')
+
+%Plot N and alpha (A_K^N W \in alpha W)
+figure; grid on; hold on;
+plot(N_array, alpha_array);
+plot(system.N, system.alpha, 'k*-', ...
+    'LineWidth', 1.4);
+hold off;
+xlabel('N')
+ylabel('alpha')

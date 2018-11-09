@@ -1,4 +1,4 @@
-function t_constraints = tightened_constraints(constraints, system, disturbance)
+function [t_constraints, N] = tightened_constraints(constraints, system, disturbance)
 
 i=1;
 disturbance_set=Polyhedron(disturbance.E,disturbance.g);
