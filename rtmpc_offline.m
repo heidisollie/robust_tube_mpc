@@ -9,14 +9,14 @@ system.K = -K;
 system.A_K = system.A + system.B * system.K;
 constraints.C_K = constraints.C + constraints.D * system.K;
 constraints.d_K = constraints.e;
-[t_constraints, system.S, system.N] = tightened_constraints(constraints, system, disturbance);
+[t_constraints, system.S_K, system.N] = tightened_constraints(constraints, system, disturbance);
 target.G = t_constraints.G;
 target.h = t_constraints.h;
 constraints.e_org = constraints.e;
 constraints.e = t_constraints.e;
-[Z, ~] = c_tube(system,constraints,target);
+[X_c] = c_tube(system,constraints,target);
 for i=1:system.N+1
-    X(i) = Z(i) + system.S;
+    X(i) = X_c(i) + system.S_K;
 end    
 %assign to problem
 problem.system = system;

@@ -1,7 +1,8 @@
-function [X,Z]=c_tube(system,constraints,target)
+function [X_c]=c_tube(system,constraints,target)
     i=1;
     X(i)=Polyhedron(target.G,target.h);
-    Z(i)=Polyhedron([],[]); % initiate with empty Z0
+    Z(i)=Polyhedron([],[]);
+  
     while i<= system.N
         i=i+1;
         current_target.G=X(i-1).A;

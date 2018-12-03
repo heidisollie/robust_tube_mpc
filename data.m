@@ -9,7 +9,7 @@
 %
 
 % initial condition
-system.x0 = [15; -15];
+system.x0 = [7; -7];
 
 % system 
 system.h=0.1;
@@ -22,7 +22,7 @@ system.m = size(system.B,2);
 % constraints
 constraints.C = [1 0; -1 0; 0 1;0 -1; 0 0; 0 0];
 constraints.D = [0;0;0;0;-1; 1];
-constraints.e = [20;20;20;20;50;50];
+constraints.e = [10;10;10;10;50;50];
 
 %terminal constraints
 constraints.G = [1 0; -1 0; 0 1; 0 -1];

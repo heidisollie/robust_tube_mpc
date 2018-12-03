@@ -1,4 +1,4 @@
-function [t_constraints, S, N] = tightened_constraints(constraints, system, disturbance)
+function [t_constraints, S_K, N] = tightened_constraints(constraints, system, disturbance)
 
 i=1;
 disturbance_set=Polyhedron(disturbance.E,disturbance.g);
@@ -9,12 +9,12 @@ while not(system.A_K^i * disturbance_set <= system.alpha * disturbance_set)
     i = i + 1;
     X(i) = system.A_K * X(i-1) + disturbance_set;
 end
-C_K = constraints.C + constraints.D * system.K;
 N = i;
-for i = 1:size(C_K,1)
-    theta_N(i) = X(N).support(C_K(i,:)');
+%s = support(S,x), s = max_y x'y, y \in S
+for i = 1:size(constraints.C_K,1)
+    theta_N(i) = X(N).support(constraints.C_K(i,:)');
 end
-S = (1 - system.alpha)^(-1) * X(N);
+S_K = (1 - system.alpha)^(-1) * X(N);
 
 t_constraints.e = constraints.e - (1 - system.alpha)^(-1) * theta_N';
 t_constraints.C = constraints.C;
@@ -36,8 +36,8 @@ end
 
 
 % initial condition
-t_constraints.E = S.A;
-t_constraints.f = S.b;
+t_constraints.E = S_K.A;
+t_constraints.f = S_K.b;
 
 %target
 t_constraints.G = X_2(i).A;
