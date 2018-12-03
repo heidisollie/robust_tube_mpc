@@ -1,6 +1,6 @@
 % System, constraints and target set
 % 
-% system - x+ = Ax + Bu + c
+% system - x+ = Ax + Bu + Ew
 % constraints -  Z = {x, u | Cx + Du \leq e }
 % disturbance - W = { w | Ew \leq g }
 % cost J = sum_0^L-1  x_k'Qx_k + u_k'Ru_k + x_L' P x_L
@@ -9,13 +9,13 @@
 %
 
 % initial condition
-system.x0 = [10; -10];
+system.x0 = [15; -15];
 
 % system 
 system.h=0.1;
 system.A = [1 system.h; 0 1];
 system.B = [0; system.h];
-system.c = [0; 0];
+system.E = [1 0; 0 1];
 system.n = size(system.A,2);
 system.m = size(system.B,2);
 

@@ -7,10 +7,19 @@ system.K = -K;
 
 % problem reformulation
 system.A_K = system.A + system.B * system.K;
-[t_constraints, system.N] = tightened_constraints(constraints, system, disturbance);
+constraints.C_K = constraints.C + constraints.D * system.K;
+constraints.d_K = constraints.e;
+[t_constraints, system.S, system.N] = tightened_constraints(constraints, system, disturbance);
+target.G = constraints.G;
+target.h = constraints.h;
+[Z, ~] = c_tube(system,constraints,target);
+for i=1:system.N+1
+    X(i) = Z(i) + system.S;
+end    
+%assign to problem
 problem.system = system;
 problem.constraints = t_constraints;
-problem.cost = cost;
+problem.cost =  cost;
 problem.disturbance = disturbance;
 
 % generate constraints and cost for mpc
@@ -18,5 +27,3 @@ problem.rmpc_disturbance.w_sequence = generate_disturbance(problem,0);
 problem.rmpc_constraints = generate_constraints(problem);
 problem.rmpc_cost = generate_cost(problem);
 
-% dsplay N and alpha
-%display_N_alpha(problem);
