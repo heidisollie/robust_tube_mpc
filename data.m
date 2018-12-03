@@ -40,4 +40,4 @@ cost.R = 2*eye(system.m);
 system.alpha = 0.25;
 
 % max number of iterations
-system.Nsim = 500;
+system.Nsim = 100;

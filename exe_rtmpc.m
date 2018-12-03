@@ -1,24 +1,24 @@
 close all;
 
-% data;
-% 
-% rtmpc_offline;
-% 
-% x(:,1) = system.x0;
-% x_nom(:,1) = system.x0;
-% 
-% for i = 1:system.Nsim
-%     % Return optimal x and u for horizon
-%     optimal(i) = rmpc(problem, x(:,i));
-%     V(i) = optimal(i).cost_V;
-%     % Apply first value
-%     v(:,i) = optimal(i).v(:,1);
-%     z(:,i) = optimal(i).z(:,1);
-%     u(:,i) = v(:,i) + problem.system.K * ( x(:,i) - z(:,i));
-%     w(:,i) = problem.rmpc_disturbance.w_sequence(:,i);
-%     x(:,i+1) = problem.system.A * x(:,i) + problem.system.B * u(:,i) + problem.system.E * w(:,i);
-%     x_nom(:,i+1) = problem.system.A * x_nom(:,i) + problem.system.B * u(:,i);
-% end
+data;
+
+rtmpc_offline;
+
+x(:,1) = system.x0;
+x_nom(:,1) = system.x0;
+
+for i = 1:system.Nsim
+    % Return optimal x and u for horizon
+    optimal(i) = rmpc(problem, x(:,i));
+    V(i) = optimal(i).cost_V;
+    % Apply first value
+    v(:,i) = optimal(i).v(:,1);
+    z(:,i) = optimal(i).z(:,1);
+    u(:,i) = v(:,i) + problem.system.K * ( x(:,i) - z(:,i));
+    w(:,i) = problem.rmpc_disturbance.w_sequence(:,i);
+    x(:,i+1) = problem.system.A * x(:,i) + problem.system.B * u(:,i) + problem.system.E * w(:,i);
+    x_nom(:,i+1) = problem.system.A * x_nom(:,i) + problem.system.B * u(:,i);
+end
 
 z(:,i+1) = [0; 0];
 
@@ -49,11 +49,13 @@ ylabel('alpha')
 
 %Plot predicticed tubes X, U
 figure; hold on;
-color = [1 0.3 0.5];
+color1 = [1 0.3 0.5];
+color2 = [1 0.8 0.5];
 for i=1:system.N+1
-    plot(X(system.N+2-i),'Color',((-i+3*system.N+1)/(3*system.N))*color);
-    plot(Z(system.N+1-i+1),'Color',((-i+3*system.N+1)/(3*system.N))*color,'LineStyle',':');    
+    plot(X(system.N+2-i),'Color',(1-i/(cs*(system.N+1)))*color1, 'alpha', 0.125);
+    plot(Z(system.N+1-i+1),'Color',(1-i/(cs*(system.N+1)))*color2, 'alpha', 0.125, 'LineStyle',':');    
 end
-plot(X_tube,'Color', [0 0 1], 'alpha', 0.125);
-plot(z(1,:),z(2,:),'k.--');
-plot(x(1,:),x(2,:),'bo--');
+plot(X_tube,'Color', [0.3 0.2 1], 'alpha', 0.125);
+z_legend = plot(z(1,:),z(2,:), 'k.--');
+x_legend = plot(x(1,:),x(2,:),'Color', [0.9 0.9 0.2], 'LineStyle', '--');
+legend([z_legend,x_legend],{'nominal state', 'system state'})

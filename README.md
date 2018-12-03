@@ -4,4 +4,4 @@ Code for robust tube MPC simulation
 
 Run "exe_rtmpc.m".
 
-Edit "data.m" for different system_equations
+Edit "data.m" for different system equations

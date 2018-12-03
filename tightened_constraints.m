@@ -16,26 +16,29 @@ for i = 1:size(C_K,1)
 end
 S = (1 - system.alpha)^(-1) * X(N);
 
-%compute terminal constraints
-i=1;
-X(i) = Polyhedron(constraints.C_K, constraints.d_K);
-cond = true;
-while cond
-        i = i+1;
-        current_target.G = X(i-1).A;
-        current_target.h = X(i-1).b;
-        X(i) = br_set(system,constraints,current_target);
-        cond = and(not(X(i-1) == X(i)), i<=system.Nsim);
-end
-
 t_constraints.e = constraints.e - (1 - system.alpha)^(-1) * theta_N';
 t_constraints.C = constraints.C;
 t_constraints.D = constraints.D;
+
+constraints.d_K = t_constraints.e;
+%compute terminal constraints
+i=1;
+X_2(i) = Polyhedron(constraints.C_K, constraints.d_K);
+cond = true;
+while cond
+        i = i+1;
+        current_target.G = X_2(i-1).A;
+        current_target.h = X_2(i-1).b;
+        X_2(i) = br_set(system,constraints,current_target);
+        cond = and(not(X_2(i-1) == X_2(i)), i<=system.Nsim);
+end
+
+
 
 % initial condition
 t_constraints.E = S.A;
 t_constraints.f = S.b;
 
 %target
-t_constraints.G = X(i).A;
-t_constraints.h = X(i).b;
+t_constraints.G = X_2(i).A;
+t_constraints.h = X_2(i).b;
