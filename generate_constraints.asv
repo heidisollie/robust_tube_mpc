@@ -1,0 +1,30 @@
+function rmpc_constraints = mpc_matrices(problem)
+
+N = problem.system.N;
+n = problem.system.n;
+% Inequality constraints
+
+c = blkdiag(kron(eye(N), problem.constraints.C), problem.constraints.G);
+d = [kron(eye(N), problem.constraints.D); zeros(size(problem.constraints.G,1) , N) ];
+a = [c d];
+e = zeros(size(n, 1), size(a,2));
+e(1:size(problem.constraints.E,1),1:size(problem.constraints.E,2)) = -problem.constraints.E;
+b = kron(ones(N,1),problem.constraints.e);
+cin = zeros(N*size(problem.constraints.C,1) + size(problem.constraints.G,1), n);
+
+
+
+rmpc_constraints.Ain = [a; a3];
+rmpc_constraints.Bin = [b;-problem.constraints.E];
+rmpc_constraints.cin = [c; problem.constraints.h; problem.constraints.f];
+
+
+% Equality constraints Aeq + Beq x = ceq
+%                      Aeq [z v] = ceq - Beq x
+%                      -A z_k + z_k+1 - B v_k = 0, k \in R_L-1
+a = [kron(eye(N), -problem.system.A) zeros(n*N, n)] + ...
+     [zeros(n*N, n) kron(eye(N), eye(n))];
+b = kron(eye(N), -problem.system.B);
+
+rmpc_constraints.Aeq = [a b];
+rmpc_constraints.Beq = zeros(N*n, 1);

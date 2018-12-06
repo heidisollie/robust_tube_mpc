@@ -1,8 +1,8 @@
-function [X_c]=c_tube(system,constraints,target)
+function X=c_tube(system,constraints)
+%generates N-step controllable sets
     i=1;
-    X(i)=Polyhedron(target.G,target.h);
+    X(i)=Polyhedron(constraints.G,constraints.h);
     Z(i)=Polyhedron([],[]);
-  
     while i<= system.N
         i=i+1;
         current_target.G=X(i-1).A;
@@ -11,6 +11,5 @@ function [X_c]=c_tube(system,constraints,target)
         L=[constraints.C constraints.D; current_target.G*system.A current_target.G*system.B];
         r=[constraints.e; current_target.h];
         Z(i)=Polyhedron(L,r);
-        n=size(system.A,2);
-        X(i)=Z(i).projection([1:n]);
+        X(i)=Polyhedron(L,r).projection(1:system.n);
     end
