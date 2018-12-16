@@ -9,7 +9,7 @@
 %
 
 % initial condition
-system.x0 = [15; -15];
+
 
 % system 
 system.h=0.1;
@@ -26,14 +26,14 @@ constraints.e = [20;20;20;20;50;50];
 
 % disturbance
 disturbance.E = [1 0; -1 0; 0 1; 0 -1];
-disturbance.g = 0.1*ones(size(disturbance.E,1),1);
+disturbance.g = 0.2*ones(size(disturbance.E,1),1);
 
 % cost
 cost.Q = 3*eye(system.n);
 cost.R = 2*eye(system.m);
 
 % alpha
-system.alpha = 0.25;
+system.alpha = 0.15;
 
 % max number of iterations
 system.Nsim = 100;

@@ -8,4 +8,4 @@ for i=1:Nsim
     U_tube(i)=v(:,i)+ K * S_K;
 end
 
-X_tube(Nsim+1)=z(:,Nsim+1)+ S_K;
+%X_tube(Nsim+1)=z(:,Nsim)+ S_K;

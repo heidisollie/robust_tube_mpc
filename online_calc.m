@@ -1,12 +1,12 @@
-function optimal = mpc(problem,x)
+function optimal = rtmpc_online(problem,x)
 
 n = problem.system.n;
 m = problem.system.m;
 N = problem.system.N;
 
-options = optimset('Display', 'off');
+options = optimset('Display', 'on');
 % get optimal decision variable and optimal value
-[output, optimal.cost_V] = quadprog(problem.mpc_cost.H, ... 
+[output, ~] = quadprog(problem.mpc_cost.H, ... 
                                     problem.mpc_cost.f, ...
                                     problem.mpc_constraints.Ain, ...
                                     problem.mpc_constraints.bin + problem.mpc_constraints.cin * x, ...
@@ -27,5 +27,5 @@ for i=1:N
     v(:,i) = output((N+1)*n + (i-1)*m + 1:(N+1)*n + i*m);
 end
 
-optimal.v=v; 
-optimal.z=z;
+optimal.z = z;
+optimal.v = v;
