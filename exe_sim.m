@@ -1,10 +1,13 @@
 % close all;
 
+system.alpha = 0.15;
 data;
-
+load('SKseq.mat')
 offline_calc;
 
-system.x0 = [15; 15];
+problem.system.w_sequence =  generate_disturbance(problem);
+
+system.x0 = [16.5; 11.5];
 x(:,1) = system.x0;
 
 
@@ -39,22 +42,20 @@ end
 
 %Plot predicticed tubes X, U, and stats x,z
 figure; hold on;
-color1 = [1 0 1];
-color2 = [0 1 1];
+color1 = [0.3 0 0.3];
+color2 = [0 0.3 0.3];
+cs=1.75;
 for i=1:system.N+1
-    plot(X_c(system.N+1-i+1),'Color',(1-i/(cs*(system.N+1)))*color2, 'alpha', 0.125, 'LineStyle',':');    
-    plot(X(system.N+2-i),'Color',(1-i/(cs*(system.N+1)))*color1, 'alpha', 0.125);
+    plot(X_c(system.N+1-i+1),'Color',(1-i/(cs*(system.N+1)))*color2, 'alpha', 0.0125, 'LineStyle',':');    
+    plot(X(system.N+2-i),'Color',(1-i/(cs*(system.N+1)))*color1, 'alpha', 0.0125);
 end
-% for i=1:system.N+1
-%     plot(X_c(system.N+1-i+1),'Color',(1-1/(cs))*color2, 'alpha', 0.125, 'LineStyle',':');    
-%     plot(X(system.N+2-i),'Color',(1-1/(cs))*color1, 'alpha', 0.125);
-% end
-
 plot(X_tube,'Color', [0.3 0.2 1], 'alpha', 0.125);
-%plot(system.X_2,'Color', [0.7 0.0 0], 'alpha', 0.125);
-z_legend = plot(z(1,:),z(2,:), 'k.--');
-x_legend = plot(x(1,:),x(2,:),'Color', [0.9 0.9 0.2], 'LineStyle', '--');
-legend([z_legend,x_legend],{'nominal state', 'system state'})
+z_legend = plot(z(1,:),z(2,:), 'r.--', 'LineWidth', 1.2);
+x_legend = plot(x(1,:),x(2,:),'Color', [0.9 0.9 0.2], 'LineStyle', '--', 'LineWidth', 1.2);
+e_legend = plot(x(1,:) - z(1,:),x(2,:) - z(2,:), 'c--', 'LineWidth', 1.2);
+legend([z_legend,x_legend, e_legend],{'nominal state $\bar{x}$', 'system state $x$', 'error state $x - \bar{x}$'}, 'Interpreter', 'Latex')
+%legend([z_legend,x_legend],{'nominal state $\bar{x}$', 'system state $x$'}, 'Interpreter', 'Latex')
+%legend([S_K_leg e_legend],{'${S_K}_N(\alpha)$', 'error state $(x - \bar{x})$'}, 'Interpreter', 'Latex')
 hold off;
 print('simulation', '-depsc', '-r300') 
 

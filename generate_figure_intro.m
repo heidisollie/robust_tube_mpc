@@ -18,10 +18,10 @@ E = 1;
 
 for i = 1:50
     % Return optimal x and u for horizon
-    optimal_1(i) = rtmpc_online(problem, x_traj_1(:,i));
-    optimal_2(i) = rtmpc_online(problem, x_traj_2(:,i));
-    optimal_3(i) = rtmpc_online(problem, x_traj_3(:,i));
-    optimal_4(i) = rtmpc_online(problem, x_traj_4(:,i));
+    optimal_1(i) = online_calc(problem, x_traj_1(:,i));
+    optimal_2(i) = online_calc(problem, x_traj_2(:,i));
+    optimal_3(i) = online_calc(problem, x_traj_3(:,i));
+    optimal_4(i) = online_calc(problem, x_traj_4(:,i));
 
     v_1(:,i) = optimal_1(i).v(:,1);
     z_1(:,i) = optimal_1(i).z(:,1);
@@ -47,16 +47,19 @@ end
 
 [X_tube,U_tube]=construct_tubes(z_3,v_3,system.S_K,system.K, 49);
 %Plot state and error trajectory
-figure; hold on; 
+figure; hold on; grid on;
 cs=1.75;
-plot(z_3(1,:), z_3(2,:), 'r');
-plot(X_tube,'Color', [0.1 0.2 1], 'alpha', 0.01, 'LineStyle', ':');
-
+plot(z_3(1,:), z_3(2,:), 'r', 'LineWidth', 1.4);
+for i=1:49
+plot(X_tube(i),'Color', [0.1 0.2 1], 'alpha', 0.015, 'LineStyle', ':');
+end
 plot(x_traj_1(1,:),x_traj_1(2,:), 'k', 'LineWidth', 1);
 plot(x_traj_2(1,:),x_traj_2(2,:), 'k', 'LineWidth', 1);
 plot(x_traj_3(1,:),x_traj_3(2,:), 'k', 'LineWidth', 1);
 plot(x_traj_4(1,:),x_traj_4(2,:), 'k', 'LineWidth', 1);
 %plot(X_tube,'Color', [0.1 0.2 1], 'alpha', 0.01);
+set(gca,'YTickLabel',[])
+set(gca,'XTickLabel',[])
 print('intro_fig', '-depsc', '-r300') 
 hold off;       
 

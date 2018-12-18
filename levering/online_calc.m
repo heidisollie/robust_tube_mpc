@@ -15,9 +15,9 @@ options = optimset('Display', 'on');
                                     [], [], [], ...
                                     options);
 
-% devectorize output to obtain optimal x
-% and optimal u
+ 
 
+% devectorize
 z = zeros(n,N);
 v = zeros(m,N);
 z(:,1) = output(1:n);
@@ -27,5 +27,6 @@ for i=1:N
     v(:,i) = output((N+1)*n + (i-1)*m + 1:(N+1)*n + i*m);
 end
 
+%asign to output
 optimal.z = z;
 optimal.v = v;

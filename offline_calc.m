@@ -15,18 +15,11 @@ constraints.e = t_constraints.e;
 constraints.G = t_constraints.G;
 constraints.h = t_constraints.h;
 
-%system.N_08 = system.N;
 %sets
 X_c = c_tube(system,constraints);
 for i=1:system.N+1
     X(i) = X_c(i) + system.S_K;
 end    
-
-%sets
-% X_c_alpha_08 = c_tube(system,constraints);
-% for i=1:system.N+1
-%     X_alpha_08(i) = X_c_alpha_08(i) + system.S_K;
-% end  
 
 %assign to problem
 problem.system = system;
@@ -37,5 +30,3 @@ problem.disturbance = disturbance;
 % generate mpc matrices
 [problem.mpc_cost, problem.mpc_constraints] = generate_mpc_matrices(problem);
 
-%generate disturbance sequence
-problem.system.w_sequence = generate_disturbance(problem);
